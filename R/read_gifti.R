@@ -1,10 +1,4 @@
-# rm(list = ls())
-# library(xml2)
-# library(rgl)
-# library(base64enc)
-# library(matrixStats)
-# file = "~/Downloads/BV_GIFTI/GzipBase64/sujet01_Lwhite.surf.gii"
-# file = "~/Downloads/BV_GIFTI/GzipBase64/sujet01_Lwhite.surf.gii"
+
 
 #' @title Read GIFTI File
 #' @description Reads a GIFTI File and parses the output
@@ -109,10 +103,4 @@ readgii = function(file){
   )
   return(L)
 }
-
-# rgl.open()
-# faces = as.vector(t(L$faces) + 1)
-# verts = L$vertices[faces,]
-# norms = L$normals[faces,]
-# rgl.triangles(x = verts, normals = norms)
 

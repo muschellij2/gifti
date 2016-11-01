@@ -13,10 +13,12 @@ convert_intent = function(intent) {
     'NIFTI_INTENT_TRIANGLE' = "faces",
     'NIFTI_INTENT_NODE_INDEX' = "indices",
     'NIFTI_INTENT_VECTOR' = "normals",
-    'NIFTI_INTENT_NONE' = "cdata"
+    'NIFTI_INTENT_NONE' = "cdata",
+    'NIFTI_INTENT_SHAPE' = "cdata"
   )
   if (is.null(namer)) {
-    stop("intent is wrong")
+    # stop("intent is wrong")
+    namer = "unknown"
   }
   return(namer)
 }
