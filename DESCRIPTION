@@ -1,7 +1,7 @@
 Package: gifti
 Type: Package
 Title: Reads in GIFTI files
-Version: 0.1
+Version: 0.2
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
 Description: More about what it does (maybe more than one line)

@@ -21,10 +21,10 @@ data_decoder = function(
   if (encoding == "ASCII") {
     return(values)
   }
-  if (encoding == "Base64Binary") {
+  if (grepl("Base64Binary", encoding)) {
     values = base64enc::base64decode(values)
   }
-  if (encoding == "GZipBase64Binary") {
+  if (grepl("GZip", encoding)) {
     values = memDecompress(values, type = "gzip")
   }
 

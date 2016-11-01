@@ -26,6 +26,13 @@ readgii = function(file){
   # Parsing Meta Data
   ###################################
   meta = xml_find_all(doc, "./MetaData")
+  f = function(xpath) {
+    xml_text(xml_find_all(xml_children(meta), xpath))
+  }
+  meta_names = f("./Name")
+  meta = f("./Value")
+  names(meta) = meta_names
+
   lab_tab = xml_find_all(doc, "./LabelTable")
 
   darray = xml_find_all(doc, "./DataArray")
@@ -45,10 +52,10 @@ readgii = function(file){
     })
 
   # transformation matrix
-  trans = lapply(darray,
-                 xml_find_all,
-                 xpath = "./CoordinateSystemTransformMatrix")
-  # xml_name(xml_children(darray[[1]]))
+  trans = lapply(
+    darray,
+    xml_find_all,
+    xpath = "./CoordinateSystemTransformMatrix")
 
   info = data_array_attributes(darray)
   dims = grep("^Dim\\d",
@@ -58,16 +65,15 @@ readgii = function(file){
   data = lapply(darray, xml_find_all, xpath = "./Data")
   vals = lapply(data, xml_text)
 
-  ind = 2
+  ind = 1
   N = nrow(info)
   L = vector(mode = "list",
              length = N)
 
   for (ind in seq(N)) {
 
-
     encoding = info$Encoding[ind]
-    dtype = info$DataType[ind]
+    datatype = info$DataType[ind]
     intent = info$Intent[ind]
     endian = info$Endian[ind]
     endian = convert_endian(endian)
@@ -75,7 +81,7 @@ readgii = function(file){
     dat = data_decoder(
       values = vals[[ind]],
       encoding = encoding,
-      datatype = dtype,
+      datatype = datatype,
       endian = endian)
 
     namer = convert_intent(intent)
@@ -95,6 +101,12 @@ readgii = function(file){
     L[[ind]] = arr
 
   }
+  L = list(data = L,
+           meta = meta,
+           version = ver,
+           transformations = trans,
+           label = lab_tab
+  )
   return(L)
 }
 
