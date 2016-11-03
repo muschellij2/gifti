@@ -1,5 +1,3 @@
-
-
 #' @title Read GIFTI File
 #' @description Reads a GIFTI File and parses the output
 #'
@@ -53,11 +51,14 @@ readgii = function(file){
 
   info = data_array_attributes(darray)
   dims = grep("^Dim\\d",
-              names(info),
+              colnames(info),
               value = TRUE)
 
-  data = lapply(darray, xml_find_all, xpath = "./Data")
-  vals = lapply(data, xml_text)
+  data = lapply(darray,
+                xml_find_all,
+                xpath = "./Data")
+  vals = lapply(data,
+                xml_text)
 
   ind = 1
   N = nrow(info)
