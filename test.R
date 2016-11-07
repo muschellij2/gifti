@@ -7,6 +7,7 @@ library(RColorBrewer)
 # file2 = "~/Downloads/BV_GIFTI/GzipBase64/sujet01_Lwhite.shape.gii"
 file1 = "~/Downloads/100307.L.pial.164k_fs_LR.surf.gii"
 # file2 = "~/Downloads/100307.L.atlasroi.164k_fs_LR.shape.gii"
+# file2 = "~/Downloads/100307.L.corrThickness.164k_fs_LR.shape.gii"
 file2 = "~/Downloads/100307.L.corrThickness.164k_fs_LR.shape.gii"
 
 
@@ -21,9 +22,9 @@ norms = L$normals[faces,]
 # cdata = gg$data$cdata[faces,]
 cdata = gg$data$unknown[faces,]
 
-cols = brewer.pal(3, "Spectral")
+cols = brewer.pal(7, "Spectral")
 mypal = colorRampPalette(colors = cols)
-n = 10
+n = 100
 # breaks = seq(min(cdata), max(cdata), length.out = n)
 # breaks = seq(-1, 1, by = 0.25)
 breaks = seq(min(cdata), max(cdata) + 0.25, by = 0.25)

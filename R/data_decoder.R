@@ -19,6 +19,13 @@ data_decoder = function(
   endian = c("little", "big")) {
   encoding = match.arg(encoding)
   if (encoding == "ASCII") {
+    values = strsplit(values, "\n")
+    values = values[[1]]
+    values = values[ !values %in% "" ]
+    values = trimws(values)
+    values = strsplit(values, " ")
+    values = lapply(values, as.numeric)
+    values = unlist(values)
     return(values)
   }
   if (grepl("Base64Binary", encoding)) {

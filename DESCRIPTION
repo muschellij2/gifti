@@ -1,11 +1,12 @@
 Package: gifti
 Type: Package
-Title: Reads in GIFTI files
-Version: 0.2
+Title: Reads in Neuroimaging 'GIFTI' Files with Geometry Information
+Version: 0.3.0
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
+Description: Functions to read in the geometry format under the 
+    Neuroimaging Informatics Technology Initiative ('NIfTI'), called 'GIFTI'. 
+    These files contain surfaces of brain imaging data.
 License: GPL-2
 Imports:
     xml2,

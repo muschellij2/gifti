@@ -6,7 +6,7 @@
 #' @return List of values
 #' @export
 #' @importFrom xml2 xml_find_all read_xml xml_attr as_list
-#' @importFrom xml2 xml_children xml_text
+#' @importFrom xml2 xml_children xml_text xml_name
 readgii = function(file){
 
   doc = read_xml(file)
@@ -49,10 +49,31 @@ readgii = function(file){
     xml_find_all,
     xpath = "./CoordinateSystemTransformMatrix")
 
+  parsed_trans = lapply(trans, function(x) {
+    cx = xml_children(x)
+    n = xml_name(cx)
+    res = sapply(cx, xml_text)
+    names(res) = n
+    if ("MatrixData" %in% n) {
+      ind = n %in% "MatrixData"
+      res[ind] = lapply(res[ind], function(mat){
+        mat = strsplit(mat, "\n")[[1]]
+        mat = trimws(mat)
+        mat = mat[ !mat %in% ""]
+        mat = lapply(strsplit(mat, " "), as.numeric)
+        mat = do.call("rbind", mat)
+        return(mat)
+      })
+    }
+    return(res)
+  })
+
   info = data_array_attributes(darray)
   dims = grep("^Dim\\d",
               colnames(info),
               value = TRUE)
+  info$name = sapply(info$Intent, convert_intent)
+
 
   data = lapply(darray,
                 xml_find_all,
@@ -96,12 +117,21 @@ readgii = function(file){
     L[[ind]] = arr
 
   }
+
   L = list(data = L,
            meta = meta,
            version = ver,
            transformations = trans,
-           label = lab_tab
+           parsed_transformations = parsed_trans,
+           label = lab_tab,
+           data_info = info
   )
   return(L)
 }
 
+#' @rdname readgii
+#' @export
+readGIfTI = function(file){
+  res = readgii(file)
+  return(res)
+}
