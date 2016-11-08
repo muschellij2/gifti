@@ -1,5 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
 
-test.R
+check_reader.R
 ^\.travis\.yml$

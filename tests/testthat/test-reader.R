@@ -1,4 +1,4 @@
-test_that("Reading in GIFTI files", {
+testthat::test_that("reading gifti files", {
   tdir = tempdir()
   download_gifti_data(tdir)
   expect_true(have_gifti_test_data(tdir))
@@ -38,5 +38,4 @@ test_that("Reading in GIFTI files", {
   ts_file = grep("white[.]inflated[.]surf[.]gii", gii_files, value = TRUE)
   tdata = readgii(ts_file)
   expect_equal(names(tdata$data), c("pointset", "triangle"))
-
 })
