@@ -13,8 +13,14 @@ convert_intent = function(intent) {
     'NIFTI_INTENT_TRIANGLE' = "faces",
     'NIFTI_INTENT_NODE_INDEX' = "indices",
     'NIFTI_INTENT_VECTOR' = "normals",
-    'NIFTI_INTENT_NONE' = "cdata",
-    'NIFTI_INTENT_SHAPE' = "cdata"
+    'NIFTI_INTENT_NORMAL' = "normals",
+    'NIFTI_INTENT_NONE' = "unknown",
+    'NIFTI_INTENT_SHAPE' = "shapes",
+    "NIFTI_INTENT_LABEL" = "labels",
+    "NIFTI_INTENT_TIME_SERIES" = "timeseries",
+    "NIFTI_INTENT_RGB_VECTOR" = "rgb",
+    "NIFTI_INTENT_RGBA_VECTOR" = "rgba",
+    "NIFTI_INTENT_GENMATRIX" = "tensors"
   )
   if (is.null(namer)) {
     # stop("intent is wrong")

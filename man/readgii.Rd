@@ -2,12 +2,15 @@
 % Please edit documentation in R/read_gifti.R
 \name{readgii}
 \alias{readGIfTI}
+\alias{read_gifti}
 \alias{readgii}
 \title{Read GIFTI File}
 \usage{
 readgii(file)
 
 readGIfTI(file)
+
+read_gifti(file)
 }
 \arguments{
 \item{file}{Name of file to read}

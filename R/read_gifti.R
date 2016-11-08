@@ -173,3 +173,10 @@ readGIfTI = function(file){
   res = readgii(file)
   return(res)
 }
+
+#' @rdname readgii
+#' @export
+read_gifti = function(file){
+  res = readgii(file)
+  return(res)
+}
