@@ -16,11 +16,12 @@ g = readgii(file1)
 gg = readgii(file2)
 # g = readgii(file3)
 L = g$data
-faces = as.vector(t(L$faces) + 1)
-verts = L$vertices[faces,]
-norms = L$normals[faces,]
+faces = as.vector(t(L$triangle) + 1)
+verts = L$pointset[faces,]
+# norms = L$normals[faces,]
 # cdata = gg$data$cdata[faces,]
-cdata = gg$data$unknown[faces,]
+cdata = gg$data$normal[faces,]
+
 
 cols = brewer.pal(7, "Spectral")
 mypal = colorRampPalette(colors = cols)
@@ -34,7 +35,7 @@ stopifnot(!any(is.na(ints)))
 cols = mypal(n)[ints]
 cols = scales::alpha(cols, 1)
 rgl.open()
-rgl.triangles(x = verts, normals = norms, color = cols)
+rgl.triangles(x = verts, color = cols)
 
 
 file1 = "~/Downloads/100307.R.pial.164k_fs_LR.surf.gii"
@@ -43,10 +44,9 @@ g = readgii(file1)
 gg = readgii(file2)
 # g = readgii(file3)
 L = g$data
-faces = as.vector(t(L$faces) + 1)
-verts = L$vertices[faces,]
-norms = L$normals[faces,]
-cdata = gg$data$unknown[faces,]
+faces = as.vector(t(L$triangle) + 1)
+verts = L$pointset[faces,]
+cdata = gg$data$normal[faces,]
 
 cols = brewer.pal(3, "Spectral")
 mypal = colorRampPalette(colors = cols)
@@ -58,4 +58,4 @@ ints = as.integer(ints)
 stopifnot(!any(is.na(ints)))
 cols = mypal(n)[ints]
 cols = scales::alpha(cols, 1)
-rgl.triangles(x = verts, normals = norms, color = cols)
+rgl.triangles(x = verts, color = cols)

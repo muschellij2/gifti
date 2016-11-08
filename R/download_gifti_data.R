@@ -42,6 +42,8 @@ download_gifti_data = function(
 #'
 #' @return Logical indicator
 #' @export
+#' @examples
+#' have_gifti_test_data()
 have_gifti_test_data = function(
   outdir = system.file(package = "gifti")
 ) {

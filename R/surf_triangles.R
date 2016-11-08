@@ -9,10 +9,22 @@ surf_triangles = function(file) {
   L = readgii(file)
   L = L$data
   # n_l = names(L)
-  L$faces = as.vector(t(L$faces) + 1)
-  L$vertices = L$vertices[ L$faces, ]
-  L$normals = L$normals[L$faces,]
-  L$cdata = L$cdata[L$faces]
-  L$unknown = L$unknown[L$faces]
+  L$triangle = as.vector(t(L$triangle) + 1)
+  L$pointset = L$pointset[ L$triangle, ]
+  L$normal = L$normal[L$triangle,]
+  n = names(L)
+  n = which(!n %in% c("triangle", "pointset", "normal"))
+  if (length(n) > 0) {
+    for (iname in n) {
+      x = L[[iname]]
+      if (is.vector(x)) {
+        x = x[ L$triangle ]
+      }
+      if (is.matrix(x)) {
+        x = x[ L$triangle, ]
+      }
+      L[[iname]] = x
+    }
+  }
   return(L)
 }

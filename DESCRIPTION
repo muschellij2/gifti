@@ -13,7 +13,8 @@ Imports:
     base64enc
 Suggests:
     rgl,
-    grDevices
+    grDevices,
+    testthat
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1.9000

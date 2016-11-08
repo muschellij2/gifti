@@ -16,7 +16,7 @@
 #'
 #'    col_file = grep("white[.]shape[.]gii", gii_files, value = TRUE)
 #'    cdata = readgii(col_file)
-#'    cdata = cdata$data$cdata
+#'    cdata = cdata$data$shape
 #'    mypal = grDevices::colorRampPalette(colors = c("blue", "black", "red"))
 #'    n = 4
 #'    breaks = quantile(cdata)
@@ -24,11 +24,12 @@
 #'     ints = as.integer(ints)
 #'     stopifnot(!any(is.na(ints)))
 #'     cols = mypal(n)[ints]
-#'     cols = cols[surfs[[1]]$faces]
+#'     cols = cols[surfs[[1]]$triangle]
 #'
 #'  if (requireNamespace("rgl", quietly = TRUE)) {
 #'     rgl::rgl.open()
-#'     rgl.triangles(surfs[[1]]$vertices, color = cols)
+#'     rgl::rgl.triangles(surfs[[1]]$pointset, color = cols)
+#'     play3d(spin3d(), duration = 5)
 #'  }
 #' }
 #'
