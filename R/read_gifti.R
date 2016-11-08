@@ -7,6 +7,31 @@
 #' @export
 #' @importFrom xml2 xml_find_all read_xml xml_attr as_list
 #' @importFrom xml2 xml_children xml_text xml_name
+#' @examples
+#' if (have_gifti_test_data()) {
+#'    gii_files = download_gifti_data()
+#'    gii_list = lapply(gii_files, readgii)
+#'    surf_files = grep("white[.]surf[.]gii", gii_files, value = TRUE)
+#'    surfs = lapply(surf_files, surf_triangles)
+#'
+#'    col_file = grep("white[.]shape[.]gii", gii_files, value = TRUE)
+#'    cdata = readgii(col_file)
+#'    cdata = cdata$data$cdata
+#'    mypal = grDevices::colorRampPalette(colors = c("blue", "black", "red"))
+#'    n = 4
+#'    breaks = quantile(cdata)
+#'     ints = cut(cdata, include.lowest = TRUE, breaks = breaks)
+#'     ints = as.integer(ints)
+#'     stopifnot(!any(is.na(ints)))
+#'     cols = mypal(n)[ints]
+#'     cols = cols[surfs[[1]]$faces]
+#'
+#'  if (requireNamespace("rgl", quietly = TRUE)) {
+#'     rgl::rgl.open()
+#'     rgl.triangles(surfs[[1]]$vertices, color = cols)
+#'  }
+#' }
+#'
 readgii = function(file){
 
   doc = read_xml(file)
@@ -26,6 +51,8 @@ readgii = function(file){
   names(meta) = meta_names
 
   lab_tab = xml_find_all(doc, "./LabelTable")
+  lab_tab = xml_attrs(xml_children(xml_find_all(doc, "./LabelTable")))
+  lab_tab = do.call("rbind", lab_tab)
 
   darray = xml_find_all(doc, "./DataArray")
   darray = as_list(darray)
@@ -67,6 +94,17 @@ readgii = function(file){
     }
     return(res)
   })
+
+  no_length_zero = function(x) {
+    if (length(x) == 0) {
+      return(NULL)
+    } else {
+      return(x)
+    }
+  }
+
+  trans = lapply(trans, no_length_zero)
+  parsed_trans = lapply(parsed_trans, no_length_zero)
 
   info = data_array_attributes(darray)
   dims = grep("^Dim\\d",

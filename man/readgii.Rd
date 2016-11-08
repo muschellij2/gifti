@@ -18,4 +18,30 @@ List of values
 \description{
 Reads a GIFTI File and parses the output
 }
+\examples{
+if (have_gifti_test_data()) {
+   gii_files = download_gifti_data()
+   gii_list = lapply(gii_files, readgii)
+   surf_files = grep("white[.]surf[.]gii", gii_files, value = TRUE)
+   surfs = lapply(surf_files, surf_triangles)
+
+   col_file = grep("white[.]shape[.]gii", gii_files, value = TRUE)
+   cdata = readgii(col_file)
+   cdata = cdata$data$cdata
+   mypal = grDevices::colorRampPalette(colors = c("blue", "black", "red"))
+   n = 4
+   breaks = quantile(cdata)
+    ints = cut(cdata, include.lowest = TRUE, breaks = breaks)
+    ints = as.integer(ints)
+    stopifnot(!any(is.na(ints)))
+    cols = mypal(n)[ints]
+    cols = cols[surfs[[1]]$faces]
+
+ if (requireNamespace("rgl", quietly = TRUE)) {
+    rgl::rgl.open()
+    rgl.triangles(surfs[[1]]$vertices, color = cols)
+ }
+}
+
+}
 

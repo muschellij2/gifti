@@ -1,7 +1,7 @@
 Package: gifti
 Type: Package
 Title: Reads in Neuroimaging 'GIFTI' Files with Geometry Information
-Version: 0.3.0
+Version: 0.4
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
 Description: Functions to read in the geometry format under the 
@@ -10,8 +10,10 @@ Description: Functions to read in the geometry format under the
 License: GPL-2
 Imports:
     xml2,
-    base64enc,
-    rgl
+    base64enc
+Suggests:
+    rgl,
+    grDevices
 Encoding: UTF-8
 LazyData: true
 RoxygenNote: 5.0.1.9000

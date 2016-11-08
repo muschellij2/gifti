@@ -1,4 +1,3 @@
-
 #' @title Make Triangles from GIfTI Image
 #' @description Creates Triangles for plotting in RGL from a GIfTI image
 #' @param file File name of GIfTI image, usuall \code{surf.gii}
