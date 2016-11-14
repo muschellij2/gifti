@@ -6,7 +6,12 @@
 #' \code{\link{readgii}}
 #' @export
 surf_triangles = function(file) {
-  L = readgii(file)
+
+  if (is.gifti(file)) {
+    L = file
+  } else {
+    L = readgii(file)
+  }
   L = L$data
   # n_l = names(L)
   L$triangle = as.vector(t(L$triangle) + 1)
