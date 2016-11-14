@@ -165,6 +165,7 @@ readgii = function(file){
            label = lab_tab,
            data_info = info
   )
+  class(L) = "gifti"
   return(L)
 }
 
