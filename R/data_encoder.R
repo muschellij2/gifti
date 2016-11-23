@@ -1,15 +1,15 @@
-#' @title Array Data Decoder
-#' @description Decodes values from a GIFTI image
+#' @title Array Data Encoder
+#' @description Encodes values for a GIFTI image
 #'
-#' @param values text from XML of GIFTI image
+#' @param values values to be encoded
 #' @param encoding encoding of GIFTI values
 #' @param datatype Passed to \code{\link{convert_binary_datatype}}
 #' @param endian Endian to pass in \code{\link{readBin}}
 #'
-#' @return Vector of values
+#' @return Single character vector
 #' @export
 #'
-#' @importFrom base64enc base64decode
+#' @importFrom base64enc base64encode
 #' @examples
 #' if (have_gifti_test_data()) {
 #'    gii_files = download_gifti_data()
@@ -24,7 +24,7 @@
 #'    datatype = datatype, endian = endian)
 #'    enc == orig
 #' }
-data_decoder = function(
+data_encoder = function(
   values,
   encoding = c("ASCII",
                "Base64Binary",
@@ -32,36 +32,34 @@ data_decoder = function(
   datatype = NULL,
   endian = c("little", "big",
              "LittleEndian", "BigEndian")) {
+
   encoding = match.arg(encoding)
   if (encoding == "ASCII") {
-    values = strsplit(values, "\n")
-    values = values[[1]]
-    values = values[ !values %in% "" ]
-    values = trimws(values)
-    values = strsplit(values, " ")
-    values = lapply(values, as.numeric)
-    values = unlist(values)
+    dig_opt = options()$digits
+    on.exit({
+      options(digits = dig_opt)
+    })
+    options(digits = 7)
+    values = as.character(values)
+    values = paste(values, collapse = "\n")
     return(values)
   }
-  if (grepl("Base64Binary", encoding)) {
-    values = base64enc::base64decode(values)
-  }
-  if (grepl("GZip", encoding)) {
-    values = memDecompress(values, type = "gzip")
-  }
-
   L = convert_binary_datatype(datatype = datatype)
   size = L$size
-  what = L$what
+  # what = L$what
   endian = match.arg(endian)
   endian = tolower(endian)
   endian = gsub("endian$", "", endian)
-  values = readBin(con = values,
-                what = what,
-                size = size,
-                endian = endian,
-                n = length(values) * 2
+  values = writeBin(object = values,
+                   con = raw(),
+                   size = size,
+                   endian = endian
   )
-
+  if (grepl("GZip", encoding)) {
+    values = memCompress(values, type = "gzip")
+  }
+  if (grepl("Base64Binary", encoding)) {
+    values = base64enc::base64encode(values)
+  }
   return(values)
 }
