@@ -27,4 +27,3 @@ mapped to those triangles
 Takes values and maps them to the correct triangles in
 space.
 }
-

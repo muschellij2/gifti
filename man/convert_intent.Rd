@@ -16,4 +16,3 @@ A character string
 Converts the \code{intent} field from a GIFTI image
 to a more standard naming
 }
-

@@ -56,7 +56,7 @@ readgii = function(file){
   lab_tab = do.call("rbind", lab_tab)
 
   darray = xml_find_all(doc, "./DataArray")
-  darray = as_list(darray)
+  # darray = as_list(darray)
   stopifnot(length(darray) == n_data_arrays)
 
   MD = lapply(darray, function(x) {

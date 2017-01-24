@@ -18,4 +18,3 @@ Converts a data type to the size and \code{what} for
 \code{\link{readBin}}, necessary for \code{Base64Binary} and
 \code{GZipBase64Binary} formats
 }
-

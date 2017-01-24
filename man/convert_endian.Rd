@@ -15,4 +15,3 @@ Character string
 \description{
 Converts Endian format from GIFTI
 }
-

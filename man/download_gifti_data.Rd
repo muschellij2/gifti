@@ -21,4 +21,3 @@ Vector of file names
 Downloads GIFTI test data from
 \url{https://www.nitrc.org/frs/download.php/411/BV_GIFTI_1.3.tar.gz}
 }
-

@@ -30,4 +30,3 @@ if (have_gifti_test_data()) {
    enc == orig
 }
 }
-

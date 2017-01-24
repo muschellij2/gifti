@@ -15,4 +15,3 @@ Logical if \code{x} is GIFTI
 \description{
 Simple wrapper to determine if class is GIFTI
 }
-

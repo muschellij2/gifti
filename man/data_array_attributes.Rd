@@ -15,4 +15,3 @@ data_array_attributes(darray)
 \description{
 Parses a list of XML data to get the attributes
 }
-

@@ -16,4 +16,3 @@ List of values corresponding to the \code{data} element from
 \description{
 Creates Triangles for plotting in RGL from a GIfTI image
 }
-
