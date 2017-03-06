@@ -35,6 +35,7 @@
 #'
 readgii = function(file){
 
+  dn = dirname(file)
   doc = read_xml(file)
   n_data_arrays = xml_attr(doc, "NumberOfDataArrays")
   n_data_arrays = as.numeric(n_data_arrays)
@@ -132,17 +133,21 @@ readgii = function(file){
     intent = info$Intent[ind]
     endian = info$Endian[ind]
     endian = convert_endian(endian)
+    ext_filename = info$ExternalFileName[ind]
+    ext_filename = file.path(dn, ext_filename)
+    n = info$n[ind]
 
     dat = data_decoder(
       values = vals[[ind]],
       encoding = encoding,
       datatype = datatype,
-      endian = endian)
+      endian = endian,
+      ext_filename = ext_filename,
+      n = n)
 
     namer = convert_intent(intent)
     names(L)[ind] = namer
 
-    n = info$n[ind]
     stopifnot(length(dat) == n)
 
     mat_dims = info[ind, dims]

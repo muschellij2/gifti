@@ -5,6 +5,10 @@
 #' @param encoding encoding of GIFTI values
 #' @param datatype Passed to \code{\link{convert_binary_datatype}}
 #' @param endian Endian to pass in \code{\link{readBin}}
+#' @param ext_filename if \code{encoding = "ExternalFileBinary"}, then
+#' this is the external filename
+#' @param n number of values to read.  Relevant if
+#' \code{encoding = "ExternalFileBinary"}
 #'
 #' @return Vector of values
 #' @export
@@ -28,11 +32,29 @@ data_decoder = function(
   values,
   encoding = c("ASCII",
                "Base64Binary",
-               "GZipBase64Binary"),
+               "GZipBase64Binary",
+               "ExternalFileBinary"),
   datatype = NULL,
   endian = c("little", "big",
-             "LittleEndian", "BigEndian")) {
+             "LittleEndian", "BigEndian"),
+  ext_filename = NULL,
+  n = NULL) {
+
   encoding = match.arg(encoding)
+  if (encoding == "ExternalFileBinary") {
+    msg = paste0(
+      "Encoding says ExternalFileBinary, but file ",
+      "doesn't exist in",
+      " the same directory as the gii.  File was ",
+      ext_filename)
+    if (is.null(ext_filename)) {
+      stop( msg)
+    }
+    if (!file.exists(ext_filename)) {
+      stop( msg)
+    }
+    values = ext_filename
+  }
   if (encoding == "ASCII") {
     values = strsplit(values, "\n")
     values = values[[1]]
@@ -45,9 +67,11 @@ data_decoder = function(
   }
   if (grepl("Base64Binary", encoding)) {
     values = base64enc::base64decode(values)
+    n = length(values) * 2
   }
   if (grepl("GZip", encoding)) {
     values = memDecompress(values, type = "gzip")
+    n = length(values) * 2
   }
 
   L = convert_binary_datatype(datatype = datatype)
@@ -56,11 +80,12 @@ data_decoder = function(
   endian = match.arg(endian)
   endian = tolower(endian)
   endian = gsub("endian$", "", endian)
-  values = readBin(con = values,
-                what = what,
-                size = size,
-                endian = endian,
-                n = length(values) * 2
+  values = readBin(
+    con = values,
+    what = what,
+    size = size,
+    endian = endian,
+    n = n
   )
 
   return(values)

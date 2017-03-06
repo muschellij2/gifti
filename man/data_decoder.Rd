@@ -4,9 +4,9 @@
 \alias{data_decoder}
 \title{Array Data Decoder}
 \usage{
-data_decoder(values, encoding = c("ASCII", "Base64Binary",
-  "GZipBase64Binary"), datatype = NULL, endian = c("little", "big",
-  "LittleEndian", "BigEndian"))
+data_decoder(values, encoding = c("ASCII", "Base64Binary", "GZipBase64Binary",
+  "ExternalFileBinary"), datatype = NULL, endian = c("little", "big",
+  "LittleEndian", "BigEndian"), ext_filename = NULL, n = NULL)
 }
 \arguments{
 \item{values}{text from XML of GIFTI image}
@@ -16,6 +16,12 @@ data_decoder(values, encoding = c("ASCII", "Base64Binary",
 \item{datatype}{Passed to \code{\link{convert_binary_datatype}}}
 
 \item{endian}{Endian to pass in \code{\link{readBin}}}
+
+\item{ext_filename}{if \code{encoding = "ExternalFileBinary"}, then
+this is the external filename}
+
+\item{n}{number of values to read.  Relevant if
+\code{encoding = "ExternalFileBinary"}}
 }
 \value{
 Vector of values
