@@ -14,6 +14,12 @@ download_gifti_data = function(
   overwrite = FALSE,
   ...
 ) {
+  # simple workaround for vignettes
+  if (missing(outdir)) {
+    if (outdir == "") {
+      outdir = tempdir()
+    }
+  }
   expected_files = c("sujet01_Lwhite.shape.gii",
                      "fmri_sujet01_Lwhite_projection.time.gii",
                      "sujet01_Lwhite.surf.gii",
@@ -47,6 +53,12 @@ download_gifti_data = function(
 have_gifti_test_data = function(
   outdir = system.file(package = "gifti")
 ) {
+  # simple workaround for vignettes
+  if (missing(outdir)) {
+    if (outdir == "") {
+      outdir = tempdir()
+    }
+  }
   expected_files = c("sujet01_Lwhite.shape.gii",
                      "fmri_sujet01_Lwhite_projection.time.gii",
                      "sujet01_Lwhite.surf.gii",
