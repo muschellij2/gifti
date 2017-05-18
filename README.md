@@ -6,6 +6,8 @@ Reads in Neuroimaging 'GIFTI' Files with Geometry Information
 
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/muschellij2/gifti?branch=master&svg=true)](https://ci.appveyor.com/project/muschellij2/gifti)
 
+[![Coverage Status](https://img.shields.io/coveralls/muschellij2/gifti.svg)](https://coveralls.io/r/muschellij2/gifti?branch=master)
+
 ## Installation
 
 You can install gifti from github with:
