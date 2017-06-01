@@ -28,7 +28,7 @@ download_gifti_data = function(
   expected_files = file.path("BV_GIFTI", "GzipBase64", expected_files)
   out_files = file.path(outdir, expected_files)
   if (!all(file.exists(out_files)) || overwrite) {
-    url = paste0( "https://www.nitrc.org/frs/download.php",
+    url = paste0( "http://www.nitrc.org/frs/download.php",
                   "/411/BV_GIFTI_1.3.tar.gz")
     destfile = basename(url)
     destfile = file.path(outdir, destfile)
