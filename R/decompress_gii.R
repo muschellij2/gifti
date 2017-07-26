@@ -7,8 +7,8 @@
 #' @return Filename of decompressed GIFTI
 #' @export
 #' @examples
-#' if (have_gifti_test_data()) {
-#'    gii_files = download_gifti_data()
+#' if (have_gifti_test_data(outdir = NULL)) {
+#'    gii_files = download_gifti_data(outdir = NULL)
 #'    outfile = decompress_gii(gii_files[1])
 #'    print(outfile)
 #' }

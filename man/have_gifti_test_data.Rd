@@ -16,5 +16,5 @@ Logical indicator
 Checks if GIFTI test data is downloaded
 }
 \examples{
-have_gifti_test_data()
+have_gifti_test_data(outdir = NULL)
 }

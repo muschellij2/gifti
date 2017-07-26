@@ -10,8 +10,8 @@
 #' @importFrom R.utils gunzip
 #' @importFrom tools file_ext
 #' @examples
-#' if (have_gifti_test_data()) {
-#'    gii_files = download_gifti_data()
+#' if (have_gifti_test_data(outdir = NULL)) {
+#'    gii_files = download_gifti_data(outdir = NULL)
 #'    gii_list = lapply(gii_files, readgii)
 #'    surf_files = grep("white[.]surf[.]gii", gii_files, value = TRUE)
 #'    surfs = lapply(surf_files, surf_triangles)

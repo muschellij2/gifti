@@ -17,8 +17,8 @@ If a GIFTI file is compressed, as in .gii.gz, this will decompress
 the file.  This has nothing to do with the encoding WITHIN the file
 }
 \examples{
-if (have_gifti_test_data()) {
-   gii_files = download_gifti_data()
+if (have_gifti_test_data(outdir = NULL)) {
+   gii_files = download_gifti_data(outdir = NULL)
    outfile = decompress_gii(gii_files[1])
    print(outfile)
 }

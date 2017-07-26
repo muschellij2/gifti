@@ -15,8 +15,8 @@
 #'
 #' @importFrom base64enc base64decode
 #' @examples
-#' if (have_gifti_test_data()) {
-#'    gii_files = download_gifti_data()
+#' if (have_gifti_test_data(outdir = NULL)) {
+#'    gii_files = download_gifti_data(outdir = NULL)
 #'    L = gifti_list(gii_files[1])
 #'    orig = L$DataArray$Data[[1]]
 #'    encoding = attributes(L$DataArray)$Encoding
