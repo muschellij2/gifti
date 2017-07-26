@@ -2,9 +2,12 @@
 % Please edit documentation in R/is_gifti.R
 \name{is.gifti}
 \alias{is.gifti}
+\alias{is_gifti}
 \title{Test if GIFTI}
 \usage{
 is.gifti(x)
+
+is_gifti(x)
 }
 \arguments{
 \item{x}{object to test}

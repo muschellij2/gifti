@@ -43,7 +43,7 @@ if (have_gifti_test_data()) {
  if (requireNamespace("rgl", quietly = TRUE)) {
     rgl::rgl.open()
     rgl::rgl.triangles(surfs[[1]]$pointset, color = cols)
-    play3d(spin3d(), duration = 5)
+    rgl::play3d(rgl::spin3d(), duration = 5)
  }
 }
 

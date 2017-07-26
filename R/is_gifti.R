@@ -8,3 +8,7 @@
 is.gifti = function(x) {
   inherits(x, "gifti")
 }
+
+#' @export
+#' @rdname is.gifti
+is_gifti = is.gifti
