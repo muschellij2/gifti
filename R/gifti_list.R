@@ -23,10 +23,7 @@ gifti_list = function(file) {
   ######################
   # Allow to read gii.gz
   ######################
-  ext = tolower(tools::file_ext(file))
-  if (ext == "gz") {
-    file = R.utils::gunzip(file, temporary = TRUE, remove = FALSE)
-  }
+  file = decompress_gii(file)
   doc = read_xml(file)
   doc = as_list(doc)
   class(doc) = "gifti_list"

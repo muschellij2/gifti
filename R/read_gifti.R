@@ -45,10 +45,7 @@ readgii = function(file){
   ######################
   # Allow to read gii.gz
   ######################
-  ext = tolower(tools::file_ext(file))
-  if (ext == "gz") {
-    file = R.utils::gunzip(file, temporary = TRUE, remove = FALSE)
-  }
+  file = decompress_gii(file)
   doc = read_xml(file)
   n_data_arrays = xml_attr(doc, "NumberOfDataArrays")
   n_data_arrays = as.numeric(n_data_arrays)

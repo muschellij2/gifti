@@ -82,15 +82,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>We provide some test data with the package, but must be downloaded using <code>download_gifti_data</code>. We also provide a test function that allows a user to check if the data is downloaded, which is useful for examples or vignettes, such as this one.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(gifti)
 <span class="kw">have_gifti_test_data</span>()</code></pre></div>
-<pre><code>## [1] FALSE</code></pre>
+<pre><code>## [1] TRUE</code></pre>
 <p>If this is false, we can combine these to ensure the data is downloaded:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw">have_gifti_test_data</span>()) {
   <span class="kw">download_gifti_data</span>()
 }</code></pre></div>
-<pre><code>## [1] &quot;/Users/johnmuschelli/Dropbox/Packages/gifti/inst/BV_GIFTI/GzipBase64/sujet01_Lwhite.shape.gii&quot;               
-## [2] &quot;/Users/johnmuschelli/Dropbox/Packages/gifti/inst/BV_GIFTI/GzipBase64/fmri_sujet01_Lwhite_projection.time.gii&quot;
-## [3] &quot;/Users/johnmuschelli/Dropbox/Packages/gifti/inst/BV_GIFTI/GzipBase64/sujet01_Lwhite.surf.gii&quot;                
-## [4] &quot;/Users/johnmuschelli/Dropbox/Packages/gifti/inst/BV_GIFTI/GzipBase64/sujet01_Lwhite.inflated.surf.gii&quot;</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span> (<span class="kw">have_gifti_test_data</span>()) {
   gii_files =<span class="st"> </span><span class="kw">download_gifti_data</span>()
   gii_list =<span class="st"> </span><span class="kw">lapply</span>(gii_files, readgii)
