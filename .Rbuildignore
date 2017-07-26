@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+
+check_reader.R
+^\.travis\.yml$
+^appveyor\.yml$
