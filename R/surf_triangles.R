@@ -1,6 +1,6 @@
 #' @title Make Triangles from GIfTI Image
 #' @description Creates Triangles for plotting in RGL from a GIfTI image
-#' @param file File name of GIfTI image, usuall \code{surf.gii}
+#' @param file File name of GIfTI image, usually \code{surf.gii}
 #'
 #' @return List of values corresponding to the \code{data} element from
 #' \code{\link{readgii}}

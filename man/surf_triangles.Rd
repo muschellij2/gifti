@@ -7,7 +7,7 @@
 surf_triangles(file)
 }
 \arguments{
-\item{file}{File name of GIfTI image, usuall \code{surf.gii}}
+\item{file}{File name of GIfTI image, usually \code{surf.gii}}
 }
 \value{
 List of values corresponding to the \code{data} element from
