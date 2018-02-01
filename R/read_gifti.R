@@ -27,12 +27,16 @@
 #'     stopifnot(!any(is.na(ints)))
 #'     cols = mypal(n)[ints]
 #'     cols = cols[surfs[[1]]$triangle]
+#' }
+#' \dontrun{
+#' if (have_gifti_test_data(outdir = NULL)) {
 #'
 #'  if (requireNamespace("rgl", quietly = TRUE)) {
 #'     rgl::rgl.open()
 #'     rgl::rgl.triangles(surfs[[1]]$pointset, color = cols)
 #'     rgl::play3d(rgl::spin3d(), duration = 5)
 #'  }
+#' }
 #' }
 #'
 readgii = function(file){

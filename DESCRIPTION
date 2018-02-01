@@ -1,11 +1,11 @@
 Package: gifti
 Type: Package
-Title: Reads in Neuroimaging 'GIFTI' Files with Geometry Information
-Version: 0.7.3
+Title: Reads in 'Neuroimaging' 'GIFTI' Files with Geometry Information
+Version: 0.7.4.1
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
 Description: Functions to read in the geometry format under the 
-    Neuroimaging Informatics Technology Initiative ('NIfTI'), called 
+    'Neuroimaging' 'Informatics' Technology Initiative ('NIfTI'), called 
     'GIFTI' <https://www.nitrc.org/projects/gifti/>. 
     These files contain surfaces of brain imaging data.
 License: GPL-2
