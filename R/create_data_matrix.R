@@ -1,6 +1,5 @@
 
-#' @title Create Data Matrix
-#' @description Creats
+#' Create Data Matrix with ordering respected
 #'
 #' @param data Data output from \code{\link{data_decoder}}
 #' @param dims Dimensions of output

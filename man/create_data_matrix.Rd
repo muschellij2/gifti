@@ -2,7 +2,7 @@
 % Please edit documentation in R/create_data_matrix.R
 \name{create_data_matrix}
 \alias{create_data_matrix}
-\title{Create Data Matrix}
+\title{Create Data Matrix with ordering respected}
 \usage{
 create_data_matrix(data, dims, ordering = c("RowMajorOrder",
   "ColumnMajorOrder"))
@@ -18,5 +18,5 @@ create_data_matrix(data, dims, ordering = c("RowMajorOrder",
 Matrix of Values
 }
 \description{
-Creats
+Create Data Matrix with ordering respected
 }
