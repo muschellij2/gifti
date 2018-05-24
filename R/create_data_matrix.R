@@ -1,4 +1,3 @@
-
 #' Create Data Matrix with ordering respected
 #'
 #' @param data Data output from \code{\link{data_decoder}}
