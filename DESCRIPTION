@@ -1,7 +1,8 @@
 Package: gifti
 Type: Package
 Title: Reads in 'Neuroimaging' 'GIFTI' Files with Geometry Information
-Version: 0.7.5
+Version: 0.7.5.9000
+Date: 2018-05-24
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>
 Description: Functions to read in the geometry format under the 
@@ -13,7 +14,8 @@ Imports:
     xml2 (>= 1.1.1),
     base64enc,
     R.utils,
-    tools
+    tools,
+    utils
 Suggests:
     rgl,
     grDevices,
