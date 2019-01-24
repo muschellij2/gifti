@@ -1,11 +1,10 @@
-# gifti 0.7.2
+# gifti 0.7.5
 
 * Added `create_data_matrix` for column order checking.
 
 * `outdir` is now temporary when downloading example data.
 
 * Added vignette.
-
 
 # gifti 0.7.2
 
