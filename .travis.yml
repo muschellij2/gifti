@@ -4,5 +4,23 @@ language: R
 sudo: false
 cache: packages
 
+addons:
+  apt:
+    packages:
+    - libcurl4-openssl-dev
+    - libxml2-dev
+    - libfftw3-dev
+    - libgsl0-dev
+    - mesa-common-dev
+    - libglu1-mesa-dev
+    - devscripts
+    - libomp-dev
+    - libhdf5-serial-dev 
+    - libhdf5-dev
+env:
+  global:
+    - RGL_USE_NULL=TRUE
+    - R_REMOTES_NO_ERRORS_FROM_WARNINGS=true
+
 after_success:
   - Rscript -e 'covr::coveralls()'
