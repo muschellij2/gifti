@@ -50,7 +50,6 @@ convert_intent = function(intent) {
 
     "NIFTI_INTENT_SYMMATRIX" = "symmatrix",
     "NIFTI_INTENT_DISPVECT" = "dispvect",
-    "NIFTI_INTENT_VECTOR" = "vector",
 
     "NIFTI_INTENT_QUATERNION" = "quads",
     "NIFTI_INTENT_DIMLESS" = "dimless"
