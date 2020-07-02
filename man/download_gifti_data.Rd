@@ -4,8 +4,11 @@
 \alias{download_gifti_data}
 \title{Download GIFTI Test Data}
 \usage{
-download_gifti_data(outdir = system.file(package = "gifti"),
-  overwrite = FALSE, ...)
+download_gifti_data(
+  outdir = system.file(package = "gifti"),
+  overwrite = FALSE,
+  ...
+)
 }
 \arguments{
 \item{outdir}{Output directory for test file directory}

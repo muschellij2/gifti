@@ -5,3 +5,4 @@ check_reader.R
 ^\.travis\.yml$
 ^appveyor\.yml$
 ^cran-comments\.md$
+^\.github$

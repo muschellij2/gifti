@@ -4,8 +4,10 @@
 \alias{convert_binary_datatype}
 \title{Convert Binary Data Type}
 \usage{
-convert_binary_datatype(datatype = c("NIFTI_TYPE_UINT8",
-  "NIFTI_TYPE_INT32", "NIFTI_TYPE_UINT32", "NIFTI_TYPE_FLOAT32"))
+convert_binary_datatype(
+  datatype = c("NIFTI_TYPE_UINT8", "NIFTI_TYPE_INT32", "NIFTI_TYPE_UINT32",
+    "NIFTI_TYPE_FLOAT32")
+)
 }
 \arguments{
 \item{datatype}{data type from GIFTI image}
