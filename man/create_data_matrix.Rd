@@ -4,8 +4,11 @@
 \alias{create_data_matrix}
 \title{Create Data Matrix with ordering respected}
 \usage{
-create_data_matrix(data, dims, ordering = c("RowMajorOrder",
-  "ColumnMajorOrder"))
+create_data_matrix(
+  data,
+  dims,
+  ordering = c("RowMajorOrder", "ColumnMajorOrder")
+)
 }
 \arguments{
 \item{data}{Data output from \code{\link{data_decoder}}}

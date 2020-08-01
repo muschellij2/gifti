@@ -4,8 +4,13 @@
 \alias{gifti_map_value}
 \title{Map Values to Triangles from GIFTI}
 \usage{
-gifti_map_value(pointset, triangle, values,
-  indices = seq(nrow(pointset)), add_one = TRUE)
+gifti_map_value(
+  pointset,
+  triangle,
+  values,
+  indices = seq(nrow(pointset)),
+  add_one = TRUE
+)
 }
 \arguments{
 \item{pointset}{pointset from GIFTI}

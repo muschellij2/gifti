@@ -177,7 +177,8 @@ readgii = function(file){
   }
 
   L = list(data = L,
-           meta = meta,
+           file_meta = meta,
+           data_meta = MD,
            version = ver,
            transformations = trans,
            parsed_transformations = parsed_trans,

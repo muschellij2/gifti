@@ -4,9 +4,12 @@
 \alias{data_encoder}
 \title{Array Data Encoder}
 \usage{
-data_encoder(values, encoding = c("ASCII", "Base64Binary",
-  "GZipBase64Binary"), datatype = NULL, endian = c("little", "big",
-  "LittleEndian", "BigEndian"))
+data_encoder(
+  values,
+  encoding = c("ASCII", "Base64Binary", "GZipBase64Binary"),
+  datatype = NULL,
+  endian = c("little", "big", "LittleEndian", "BigEndian")
+)
 }
 \arguments{
 \item{values}{values to be encoded}

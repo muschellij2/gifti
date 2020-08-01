@@ -4,10 +4,14 @@
 \alias{data_decoder}
 \title{Array Data Decoder}
 \usage{
-data_decoder(values, encoding = c("ASCII", "Base64Binary",
-  "GZipBase64Binary", "ExternalFileBinary"), datatype = NULL,
+data_decoder(
+  values,
+  encoding = c("ASCII", "Base64Binary", "GZipBase64Binary", "ExternalFileBinary"),
+  datatype = NULL,
   endian = c("little", "big", "LittleEndian", "BigEndian"),
-  ext_filename = NULL, n = NULL)
+  ext_filename = NULL,
+  n = NULL
+)
 }
 \arguments{
 \item{values}{text from XML of GIFTI image}
