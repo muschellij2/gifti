@@ -161,7 +161,7 @@ readgii = function(file){
 
     namer = convert_intent(intent)
     names(L)[ind] = namer
-
+    
     stopifnot(length(dat) == n)
 
     mat_dims = info[ind, dims]
