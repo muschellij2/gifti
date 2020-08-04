@@ -55,8 +55,11 @@ write_gifti_from_template = function(template_file, out_file, new_data=NULL){
     )
   }
 
-  #gii = add_CDATA_to_gifti(gii)
-  write_xml(as_xml_document(gii), out_file, options = c("format", "as_xml"))
+  gii = as.character(as_xml_document(gii))
+  gii = gsub("<Name>", "<Name><![CDATA[", gsub("</Name>", "]]></Name>", as.character(gii), fixed=TRUE), fixed=TRUE)
+  gii = gsub("<Value>", "<Value><![CDATA[", gsub("</Value>", "]]></Value>", as.character(gii), fixed=TRUE), fixed=TRUE)
+  writeLines(gii, out_file)
+  #write_xml(as_xml_document(gii), out_file, options = c("format", "as_xml"))
 
   invisible()
 }

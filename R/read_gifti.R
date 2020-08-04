@@ -66,9 +66,9 @@ readgii = function(file){
   meta = f("./Value")
   names(meta) = meta_names
 
-  lab_tab = xml_find_all(doc, "./LabelTable")
-  lab_tab = xml_attrs(xml_children(xml_find_all(doc, "./LabelTable")))
-  lab_tab = do.call("rbind", lab_tab)
+  lab_tab_pre = xml_children(xml_find_all(doc, "./LabelTable"))
+  lab_tab = do.call("rbind", xml_attrs(lab_tab_pre))
+  if (!is.null(lab_tab)) {rownames(lab_tab) = xml_text(lab_tab_pre)}
 
   darray = xml_find_all(doc, "./DataArray")
   # darray = as_list(darray)
