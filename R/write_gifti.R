@@ -73,14 +73,29 @@ write_gifti <- function(gii, out_file){
     for (jj in 1:length(gii$transformations[[ii]])) {
       CSTM <- gii$transformations[[ii]][[jj]]
       if (is.null(CSTM)) {next}
-      T_jj <- xml_add_child(D_ii, "CoordinateSystemTransformMatrix", CSTM)
+      T_jj <- xml_add_child(D_ii, "CoordinateSystemTransformMatrix")
+      xml_replace(T_jj, CSTM)
     }
     
     # DataArray Data
+    # [TO DO]: external files?
+    # [TO DO]: resolve below case
+    if (gii$data_info$Encoding[ii] != "ASCII" && gii$data_info$DataType == "NIFTI_TYPE_INT32") {
+      stop("Not working right now: NIFTI_TYPE_INT32 and non-ASCII encoding.")
+    }
+    dat <- gii$data[[ii]]
+    if ((length(dim(dat)) > 1) && gii$data_info$ArrayIndexingOrder=="RowMajorOrder") { 
+      dat <- aperm(dat, length(dim(dat)):1)
+    }
     D_ii_data <- xml_add_child(
       D_ii, 
       "Data", 
-      data_encoder(gii$data[[ii]], gii$data_info$Encoding, gii$data_info$Endian)
+      data_encoder(
+        as.numeric(dat), 
+        encoding = gii$data_info$Encoding[ii], 
+        datatype = gii$data_info$DataType[ii], 
+        endian = gii$data_info$Endian[ii]
+      )
     )
   }
 
