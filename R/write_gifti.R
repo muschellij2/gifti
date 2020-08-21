@@ -9,7 +9,7 @@
 #' 
 #' @import xml2
 #' @export
-write_gifti <- function(gii, out_file, use_parsed_transformations=FALSE){
+writegii <- function(gii, out_file, use_parsed_transformations=FALSE){
   stopifnot(is.gifti(gii))
 
   # GIFTI ROOT
@@ -124,4 +124,18 @@ write_gifti <- function(gii, out_file, use_parsed_transformations=FALSE){
   to_write <- gsub("<GIFTI", '<!DOCTYPE GIFTI SYSTEM "http://www.nitrc.org/frs/download.php/1594/gifti.dtd">
   <GIFTI', to_write, fixed=TRUE)
   writeLines(to_write, out_file)
+}
+
+#' @rdname writegii
+#' @export
+writeGIfTI = function(file){
+  res = writegii(file)
+  return(res)
+}
+
+#' @rdname writegii
+#' @export
+write_gifti = function(file){
+  res = writegii(file)
+  return(res)
 }
