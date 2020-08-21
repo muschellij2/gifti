@@ -128,14 +128,12 @@ writegii <- function(gii, out_file, use_parsed_transformations=FALSE){
 
 #' @rdname writegii
 #' @export
-writeGIfTI = function(file){
-  res = writegii(file)
-  return(res)
+writeGIfTI = function(gii, out_file, use_parsed_transformations=FALSE){
+  writegii(gii, out_file, use_parsed_transformations)
 }
 
 #' @rdname writegii
 #' @export
-write_gifti = function(file){
-  res = writegii(file)
-  return(res)
+write_gifti = function(gii, out_file, use_parsed_transformations=FALSE){
+  writegii(gii, out_file, use_parsed_transformations)
 }
