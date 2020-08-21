@@ -95,7 +95,7 @@ readgii = function(file){
   parsed_trans = lapply(trans, function(x) {
     cx = xml_children(x)
     n = xml_name(cx)
-    res = sapply(cx, xml_text)
+    res = lapply(cx, xml_text)
     names(res) = n
     if ("MatrixData" %in% n) {
       ind = n %in% "MatrixData"

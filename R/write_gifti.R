@@ -3,10 +3,13 @@
 #'
 #' @param gii The "gifti" object
 #' @param out_file Where to write the new GIFTI file
+#' @param use_parsed_transformations Should the \code{$parsed_transformations} 
+#'  be written instead of the \code{transformations}? Use if the XML pointers
+#'  in \code{transformations} might be invalid. Default: \code{FALSE}
 #' 
 #' @import xml2
 #' @export
-write_gifti <- function(gii, out_file){
+write_gifti <- function(gii, out_file, use_parsed_transformations=FALSE){
   stopifnot(is.gifti(gii))
 
   # GIFTI ROOT
@@ -70,13 +73,30 @@ write_gifti <- function(gii, out_file){
     }
     
     # DataArray Transformations
-    for (jj in 1:length(gii$transformations[[ii]])) {
-      CSTM <- gii$transformations[[ii]][[jj]]
-      if (is.null(CSTM)) {next}
-      T_jj <- xml_add_child(D_ii, "CoordinateSystemTransformMatrix")
-      xml_replace(T_jj, CSTM)
+    ## From parsed
+    if (use_parsed_transformations && !is.null(gii$transformations[[ii]])){
+      for (jj in 1:(length(gii$parsed_transformations[[ii]])/3)) {
+        CSTM <- gii$parsed_transformations[[ii]][(jj-1)*3 + 1:3]
+        T_jj <- xml_add_child(D_ii, "CoordinateSystemTransformMatrix")
+        T_D_jj <- xml_add_child(T_jj, "DataSpace")
+        xml_add_child(T_D_jj, xml_cdata(CSTM[[1]]))
+        T_D_jj <- xml_add_child(T_jj, "TransformedSpace")
+        xml_add_child(T_D_jj, xml_cdata(CSTM[[2]]))
+        T_D_jj <- xml_add_child(
+          T_jj, "MatrixData", 
+          paste(apply(CSTM[[3]], 1, paste, collapse=" "), collapse="\n")
+        )
+      }
+    ## From not parsed
+    } else {
+      for (jj in 1:length(gii$transformations[[ii]])) {
+        CSTM <- gii$transformations[[ii]][[jj]]
+        if (is.null(CSTM)) {next}
+        T_jj <- xml_add_child(D_ii, "CoordinateSystemTransformMatrix")
+        xml_replace(T_jj, CSTM)
+      }
     }
-    
+      
     # DataArray Data
     # [TO DO]: external files?
     # [TO DO]: resolve below case

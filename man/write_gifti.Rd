@@ -4,12 +4,16 @@
 \alias{write_gifti}
 \title{Write .gii xml from "gifti" object}
 \usage{
-write_gifti(gii, out_file)
+write_gifti(gii, out_file, use_parsed_transformations = FALSE)
 }
 \arguments{
 \item{gii}{The "gifti" object}
 
 \item{out_file}{Where to write the new GIFTI file}
+
+\item{use_parsed_transformations}{Should the \code{$parsed_transformations} 
+be written instead of the \code{transformations}? Use if the XML pointers
+in \code{transformations} might be invalid. Default: \code{FALSE}}
 }
 \description{
 Writes a "gifti" object to a GIFTI file (ends in *.gii).
