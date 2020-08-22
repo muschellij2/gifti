@@ -27,12 +27,14 @@ writegii <- function(gii, out_file, use_parsed_transformations=FALSE){
 
   # META DATA
   file_meta <- xml_add_child(root, "MetaData")
-  for (ii in 1:length(gii$file_meta)) {
-    MD_ii <- xml_add_child(file_meta, "MD")
-    N_ii <- xml_add_child(MD_ii, "Name") 
-    xml_add_child(N_ii, xml_cdata(attributes(gii$file_meta)$names[ii]))
-    V_ii <- xml_add_child(MD_ii, "Value") 
-    xml_add_child(V_ii, xml_cdata(as.character(gii$file_meta)[ii]))
+  if (length(gii$file_meta) > 0) {
+    for (ii in 1:length(gii$file_meta)) {
+      MD_ii <- xml_add_child(file_meta, "MD")
+      N_ii <- xml_add_child(MD_ii, "Name") 
+      xml_add_child(N_ii, xml_cdata(attributes(gii$file_meta)$names[ii]))
+      V_ii <- xml_add_child(MD_ii, "Value") 
+      xml_add_child(V_ii, xml_cdata(as.character(gii$file_meta)[ii]))
+    }
   }
 
   # LABEL TABLE
