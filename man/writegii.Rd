@@ -8,9 +8,9 @@
 \usage{
 writegii(gii, out_file, use_parsed_transformations = FALSE)
 
-writeGIfTI(file)
+writeGIfTI(gii, out_file, use_parsed_transformations = FALSE)
 
-write_gifti(file)
+write_gifti(gii, out_file, use_parsed_transformations = FALSE)
 }
 \arguments{
 \item{gii}{The "gifti" object}

@@ -66,7 +66,7 @@ writegii <- function(gii, out_file, use_parsed_transformations=FALSE){
     
     # DataArray MetaData
     D_ii_meta <- xml_add_child(D_ii, "MetaData")
-    if (nrow(gii$data_meta[[ii]] > 0) {
+    if (nrow(gii$data_meta[[ii]] > 0)) {
       for (jj in 1:nrow(gii$data_meta[[ii]])) {
         MD_jj <- xml_add_child(D_ii_meta, "MD")
         N_jj <- xml_add_child(MD_jj, "Name")
@@ -104,11 +104,11 @@ writegii <- function(gii, out_file, use_parsed_transformations=FALSE){
     # DataArray Data
     # [TO DO]: external files?
     # [TO DO]: resolve below case
-    if (gii$data_info$Encoding[ii] != "ASCII" && gii$data_info$DataType == "NIFTI_TYPE_INT32") {
+    if (gii$data_info$Encoding[ii] != "ASCII" && gii$data_info$DataType[ii] == "NIFTI_TYPE_INT32") {
       stop("Not working right now: NIFTI_TYPE_INT32 and non-ASCII encoding.")
     }
     dat <- gii$data[[ii]]
-    if ((length(dim(dat)) > 1) && gii$data_info$ArrayIndexingOrder=="RowMajorOrder") { 
+    if ((length(dim(dat)) > 1) && gii$data_info$ArrayIndexingOrder[ii]=="RowMajorOrder") { 
       dat <- aperm(dat, length(dim(dat)):1)
     }
     D_ii_data <- xml_add_child(
