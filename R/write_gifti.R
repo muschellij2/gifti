@@ -64,12 +64,14 @@ writegii <- function(gii, out_file, use_parsed_transformations=FALSE){
     
     # DataArray MetaData
     D_ii_meta <- xml_add_child(D_ii, "MetaData")
-    for (jj in 1:nrow(gii$data_meta[[ii]])) {
-      MD_jj <- xml_add_child(D_ii_meta, "MD")
-      N_jj <- xml_add_child(MD_jj, "Name")
-      xml_add_child(N_jj, xml_cdata(gii$data_meta[[ii]][jj,1]))
-      V_jj <- xml_add_child(MD_jj, "Value")
-      xml_add_child(V_jj, xml_cdata(gii$data_meta[[ii]][jj,2]))
+    if (nrow(gii$data_meta[[ii]] > 0) {
+      for (jj in 1:nrow(gii$data_meta[[ii]])) {
+        MD_jj <- xml_add_child(D_ii_meta, "MD")
+        N_jj <- xml_add_child(MD_jj, "Name")
+        xml_add_child(N_jj, xml_cdata(gii$data_meta[[ii]][jj,1]))
+        V_jj <- xml_add_child(MD_jj, "Value")
+        xml_add_child(V_jj, xml_cdata(gii$data_meta[[ii]][jj,2]))
+      }
     }
     
     # DataArray Transformations
