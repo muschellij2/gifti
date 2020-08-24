@@ -66,9 +66,9 @@ readgii = function(file){
   meta = f("./Value")
   names(meta) = meta_names
 
-  lab_tab = xml_find_all(doc, "./LabelTable")
-  lab_tab = xml_attrs(xml_children(xml_find_all(doc, "./LabelTable")))
-  lab_tab = do.call("rbind", lab_tab)
+  lab_tab_pre = xml_children(xml_find_all(doc, "./LabelTable"))
+  lab_tab = do.call("rbind", xml_attrs(lab_tab_pre))
+  if (!is.null(lab_tab)) {rownames(lab_tab) = xml_text(lab_tab_pre)}
 
   darray = xml_find_all(doc, "./DataArray")
   # darray = as_list(darray)
@@ -95,7 +95,7 @@ readgii = function(file){
   parsed_trans = lapply(trans, function(x) {
     cx = xml_children(x)
     n = xml_name(cx)
-    res = sapply(cx, xml_text)
+    res = lapply(cx, xml_text)
     names(res) = n
     if ("MatrixData" %in% n) {
       ind = n %in% "MatrixData"
@@ -161,7 +161,7 @@ readgii = function(file){
 
     namer = convert_intent(intent)
     names(L)[ind] = namer
-
+    
     stopifnot(length(dat) == n)
 
     mat_dims = info[ind, dims]
@@ -177,7 +177,8 @@ readgii = function(file){
   }
 
   L = list(data = L,
-           meta = meta,
+           file_meta = meta,
+           data_meta = MD,
            version = ver,
            transformations = trans,
            parsed_transformations = parsed_trans,
