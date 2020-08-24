@@ -7,6 +7,10 @@
 #'
 #' @return List of length 2: with elements of size and what
 #' @export
+#' @examples
+#' convert_binary_datatype()
+#' convert_binary_datatype('NIFTI_TYPE_INT32')
+#' testthat::expect_error(convert_binary_datatype('NIFTI_TYPE_BLAH'))
 convert_binary_datatype = function(
   datatype = c("NIFTI_TYPE_UINT8",
                "NIFTI_TYPE_INT32",
@@ -15,7 +19,7 @@ convert_binary_datatype = function(
   in_data = datatype
   res = try({
     datatype = match.arg(datatype)
-  })
+  }, silent = TRUE)
   if (inherits(res, "try-error")) {
     stop(paste0("GIFTI datatype is unknown; ",
            "datatype is ", in_data))

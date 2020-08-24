@@ -17,7 +17,7 @@ write_gifti(gii, out_file, use_parsed_transformations = FALSE)
 
 \item{out_file}{Where to write the new GIFTI file}
 
-\item{use_parsed_transformations}{Should the \code{$parsed_transformations} 
+\item{use_parsed_transformations}{Should the \code{$parsed_transformations}
 be written instead of the \code{transformations}? Use if the XML pointers
 in \code{transformations} might be invalid. Default: \code{FALSE}}
 }

@@ -1,24 +1,24 @@
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  outdir = NULL
 #  library(gifti)
 #  have_gifti_test_data(outdir = outdir)
 
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 outdir = NULL
 library(gifti)
 have_gifti_test_data(outdir = outdir)
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  if (!have_gifti_test_data()) {
 #    download_gifti_data()
 #  }
 
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 if (!have_gifti_test_data(outdir = outdir)) {
   download_gifti_data(outdir = outdir)
 }
 
-## ---- eval = FALSE-------------------------------------------------------
+## ---- eval = FALSE------------------------------------------------------------
 #  if (have_gifti_test_data(outdir = outdir)) {
 #    gii_files = download_gifti_data(outdir = outdir)
 #    gii_list = lapply(gii_files, readgii)
@@ -44,12 +44,17 @@ if (!have_gifti_test_data(outdir = outdir)) {
 #    }
 #  }
 
-## ---- include = FALSE----------------------------------------------------
+## ---- include = FALSE---------------------------------------------------------
 if (have_gifti_test_data(outdir = outdir)) {
   gii_files = download_gifti_data(outdir = outdir)
   gii_list = lapply(gii_files, readgii)
   surf_files = grep("white[.]surf[.]gii", gii_files, value = TRUE)
-  surfs = lapply(surf_files, surf_triangles)
+  surfs = lapply(surf_files, function(r) {
+    if (r == surf_files[[1]]) {
+      r = readgii(r)
+    }
+    surf_triangles(r)
+    })
   
   col_file = grep("white[.]shape[.]gii", gii_files, value = TRUE)
   cdata = readgii(col_file)

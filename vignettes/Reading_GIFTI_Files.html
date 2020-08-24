@@ -1,47 +1,75 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1" />
 
 <meta name="author" content="John Muschelli" />
 
-<meta name="date" content="2018-02-01" />
+<meta name="date" content="2020-08-24" />
 
 <title>Reading GIFTI files in R</title>
 
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
+// v0.0.1
+// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
+
+document.addEventListener('DOMContentLoaded', function() {
+  const codeList = document.getElementsByClassName("sourceCode");
+  for (var i = 0; i < codeList.length; i++) {
+    var linkList = codeList[i].getElementsByTagName('a');
+    for (var j = 0; j < linkList.length; j++) {
+      if (linkList[j].innerHTML === "") {
+        linkList[j].setAttribute('aria-hidden', 'true');
+      }
+    }
+  }
+});
+</script>
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; position: absolute; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
 div.sourceCode { margin: 1em 0; }
 pre.sourceCode { margin: 0; }
 @media screen {
 div.sourceCode { overflow: auto; }
 }
 @media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
 }
-pre.numberSource a.sourceLine
-  { position: relative; }
-pre.numberSource a.sourceLine:empty
-  { position: absolute; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: absolute; left: -5em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all;
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
     -webkit-touch-callout: none; -webkit-user-select: none;
     -khtml-user-select: none; -moz-user-select: none;
     -ms-user-select: none; user-select: none;
@@ -50,9 +78,9 @@ pre.numberSource a.sourceLine::before
   }
 pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
 div.sourceCode
-  {  }
+  {   }
 @media screen {
-a.sourceLine::before { text-decoration: underline; }
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
 code span.al { color: #ff0000; font-weight: bold; } /* Alert */
 code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
@@ -83,7 +111,29 @@ code span.st { color: #4070a0; } /* String */
 code span.va { color: #19177c; } /* Variable */
 code span.vs { color: #4070a0; } /* VerbatimString */
 code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
@@ -97,9 +147,6 @@ padding-right: 2em;
 font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 font-size: 14px;
 line-height: 1.35;
-}
-#header {
-text-align: center;
 }
 #TOC {
 clear: both;
@@ -268,8 +315,12 @@ code > span.st { color: #d14; }
 code > span.co { color: #888888; font-style: italic; } 
 code > span.ot { color: #007020; } 
 code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
 </style>
+
+
+
 
 </head>
 
@@ -279,51 +330,54 @@ code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61
 
 
 <h1 class="title toc-ignore">Reading GIFTI files in R</h1>
-<h4 class="author"><em>John Muschelli</em></h4>
-<h4 class="date"><em>2018-02-01</em></h4>
+<h4 class="author">John Muschelli</h4>
+<h4 class="date">2020-08-24</h4>
 
 
 
-<section id="gifti-files" class="level2">
+<div id="gifti-files" class="section level2">
 <h2>GIFTI Files</h2>
 <p>GIFTI files have surface data that can be rendered in R. Overall, they contain data that is stored in standard XML formats. We provide some utilities that rely on the XML parsing of the <code>xml2</code> package, mainly the <code>readgii</code> function. The <code>read_gifti</code> and <code>readGIfTI</code> functions are duplicates of the <code>readgii</code> function, but were made for ease of use for programmers who are used to the <code>readNIfTI</code> function from the <code>oro.nifti</code> package.</p>
-<section id="getting-the-data" class="level3">
+<div id="getting-the-data" class="section level3">
 <h3>Getting the Data</h3>
 <p>We provide some test data with the package, but must be downloaded using <code>download_gifti_data</code>. We also provide a test function that allows a user to check if the data is downloaded, which is useful for examples or vignettes, such as this one.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1">outdir =<span class="st"> </span><span class="ot">NULL</span></a>
-<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">library</span>(gifti)</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3"><span class="kw">have_gifti_test_data</span>(<span class="dt">outdir =</span> outdir)</a></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>outdir =<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(gifti)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">have_gifti_test_data</span>(<span class="dt">outdir =</span> outdir)</span></code></pre></div>
 <p>If this is false, we can combine these to ensure the data is downloaded:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1"><span class="cf">if</span> (<span class="op">!</span><span class="kw">have_gifti_test_data</span>()) {</a>
-<a class="sourceLine" id="cb2-2" data-line-number="2">  <span class="kw">download_gifti_data</span>()</a>
-<a class="sourceLine" id="cb2-3" data-line-number="3">}</a></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1"><span class="cf">if</span> (<span class="kw">have_gifti_test_data</span>(<span class="dt">outdir =</span> outdir)) {</a>
-<a class="sourceLine" id="cb3-2" data-line-number="2">  gii_files =<span class="st"> </span><span class="kw">download_gifti_data</span>(<span class="dt">outdir =</span> outdir)</a>
-<a class="sourceLine" id="cb3-3" data-line-number="3">  gii_list =<span class="st"> </span><span class="kw">lapply</span>(gii_files, readgii)</a>
-<a class="sourceLine" id="cb3-4" data-line-number="4">  surf_files =<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;white[.]surf[.]gii&quot;</span>, gii_files, <span class="dt">value =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb3-5" data-line-number="5">  surfs =<span class="st"> </span><span class="kw">lapply</span>(surf_files, surf_triangles)</a>
-<a class="sourceLine" id="cb3-6" data-line-number="6">  </a>
-<a class="sourceLine" id="cb3-7" data-line-number="7">  col_file =<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;white[.]shape[.]gii&quot;</span>, gii_files, <span class="dt">value =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb3-8" data-line-number="8">  cdata =<span class="st"> </span><span class="kw">readgii</span>(col_file)</a>
-<a class="sourceLine" id="cb3-9" data-line-number="9">  cdata =<span class="st"> </span>cdata<span class="op">$</span>data<span class="op">$</span>shape</a>
-<a class="sourceLine" id="cb3-10" data-line-number="10">  mypal =<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>))</a>
-<a class="sourceLine" id="cb3-11" data-line-number="11">  n =<span class="st"> </span><span class="dv">4</span></a>
-<a class="sourceLine" id="cb3-12" data-line-number="12">  breaks =<span class="st"> </span><span class="kw">quantile</span>(cdata)</a>
-<a class="sourceLine" id="cb3-13" data-line-number="13">  ints =<span class="st"> </span><span class="kw">cut</span>(cdata, <span class="dt">include.lowest =</span> <span class="ot">TRUE</span>, <span class="dt">breaks =</span> breaks)</a>
-<a class="sourceLine" id="cb3-14" data-line-number="14">  ints =<span class="st"> </span><span class="kw">as.integer</span>(ints)</a>
-<a class="sourceLine" id="cb3-15" data-line-number="15">  <span class="kw">stopifnot</span>(<span class="op">!</span><span class="kw">any</span>(<span class="kw">is.na</span>(ints)))</a>
-<a class="sourceLine" id="cb3-16" data-line-number="16">  cols =<span class="st"> </span><span class="kw">mypal</span>(n)[ints]</a>
-<a class="sourceLine" id="cb3-17" data-line-number="17">  cols =<span class="st"> </span>cols[surfs[[<span class="dv">1</span>]]<span class="op">$</span>triangle]</a>
-<a class="sourceLine" id="cb3-18" data-line-number="18">  </a>
-<a class="sourceLine" id="cb3-19" data-line-number="19">  <span class="cf">if</span> (<span class="kw">requireNamespace</span>(<span class="st">&quot;rgl&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</a>
-<a class="sourceLine" id="cb3-20" data-line-number="20">    rgl<span class="op">::</span><span class="kw">rgl.open</span>()</a>
-<a class="sourceLine" id="cb3-21" data-line-number="21">    rgl<span class="op">::</span><span class="kw">rgl.triangles</span>(surfs[[<span class="dv">1</span>]]<span class="op">$</span>pointset, <span class="dt">color =</span> cols)</a>
-<a class="sourceLine" id="cb3-22" data-line-number="22">    rgl<span class="op">::</span><span class="kw">play3d</span>(rgl<span class="op">::</span><span class="kw">spin3d</span>(), <span class="dt">duration =</span> <span class="dv">5</span>)</a>
-<a class="sourceLine" id="cb3-23" data-line-number="23">  }</a>
-<a class="sourceLine" id="cb3-24" data-line-number="24">}</a></code></pre></div>
-</section>
-</section>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">have_gifti_test_data</span>()) {</span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="kw">download_gifti_data</span>()</span>
+<span id="cb2-3"><a href="#cb2-3"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="cf">if</span> (<span class="kw">have_gifti_test_data</span>(<span class="dt">outdir =</span> outdir)) {</span>
+<span id="cb3-2"><a href="#cb3-2"></a>  gii_files =<span class="st"> </span><span class="kw">download_gifti_data</span>(<span class="dt">outdir =</span> outdir)</span>
+<span id="cb3-3"><a href="#cb3-3"></a>  gii_list =<span class="st"> </span><span class="kw">lapply</span>(gii_files, readgii)</span>
+<span id="cb3-4"><a href="#cb3-4"></a>  surf_files =<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;white[.]surf[.]gii&quot;</span>, gii_files, <span class="dt">value =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>  surfs =<span class="st"> </span><span class="kw">lapply</span>(surf_files, surf_triangles)</span>
+<span id="cb3-6"><a href="#cb3-6"></a>  </span>
+<span id="cb3-7"><a href="#cb3-7"></a>  col_file =<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;white[.]shape[.]gii&quot;</span>, gii_files, <span class="dt">value =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb3-8"><a href="#cb3-8"></a>  cdata =<span class="st"> </span><span class="kw">readgii</span>(col_file)</span>
+<span id="cb3-9"><a href="#cb3-9"></a>  cdata =<span class="st"> </span>cdata<span class="op">$</span>data<span class="op">$</span>shape</span>
+<span id="cb3-10"><a href="#cb3-10"></a>  mypal =<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>))</span>
+<span id="cb3-11"><a href="#cb3-11"></a>  n =<span class="st"> </span><span class="dv">4</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>  breaks =<span class="st"> </span><span class="kw">quantile</span>(cdata)</span>
+<span id="cb3-13"><a href="#cb3-13"></a>  ints =<span class="st"> </span><span class="kw">cut</span>(cdata, <span class="dt">include.lowest =</span> <span class="ot">TRUE</span>, <span class="dt">breaks =</span> breaks)</span>
+<span id="cb3-14"><a href="#cb3-14"></a>  ints =<span class="st"> </span><span class="kw">as.integer</span>(ints)</span>
+<span id="cb3-15"><a href="#cb3-15"></a>  <span class="kw">stopifnot</span>(<span class="op">!</span><span class="kw">any</span>(<span class="kw">is.na</span>(ints)))</span>
+<span id="cb3-16"><a href="#cb3-16"></a>  cols =<span class="st"> </span><span class="kw">mypal</span>(n)[ints]</span>
+<span id="cb3-17"><a href="#cb3-17"></a>  cols =<span class="st"> </span>cols[surfs[[<span class="dv">1</span>]]<span class="op">$</span>triangle]</span>
+<span id="cb3-18"><a href="#cb3-18"></a>  </span>
+<span id="cb3-19"><a href="#cb3-19"></a>  <span class="cf">if</span> (<span class="kw">requireNamespace</span>(<span class="st">&quot;rgl&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</span>
+<span id="cb3-20"><a href="#cb3-20"></a>    rgl<span class="op">::</span><span class="kw">rgl.open</span>()</span>
+<span id="cb3-21"><a href="#cb3-21"></a>    rgl<span class="op">::</span><span class="kw">rgl.triangles</span>(surfs[[<span class="dv">1</span>]]<span class="op">$</span>pointset, <span class="dt">color =</span> cols)</span>
+<span id="cb3-22"><a href="#cb3-22"></a>    rgl<span class="op">::</span><span class="kw">play3d</span>(rgl<span class="op">::</span><span class="kw">spin3d</span>(), <span class="dt">duration =</span> <span class="dv">5</span>)</span>
+<span id="cb3-23"><a href="#cb3-23"></a>  }</span>
+<span id="cb3-24"><a href="#cb3-24"></a>}</span></code></pre></div>
+</div>
+</div>
 
+
+
+<!-- code folding -->
 
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
