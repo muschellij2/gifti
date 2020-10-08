@@ -47,7 +47,7 @@ if (!have_gifti_test_data(outdir = outdir)) {
 ## ---- include = FALSE---------------------------------------------------------
 if (have_gifti_test_data(outdir = outdir)) {
   gii_files = download_gifti_data(outdir = outdir)
-  gii_list = lapply(gii_files, readgii)
+  gii_list = readgii(gii_files)
   surf_files = grep("white[.]surf[.]gii", gii_files, value = TRUE)
   surfs = lapply(surf_files, function(r) {
     if (r == surf_files[[1]]) {

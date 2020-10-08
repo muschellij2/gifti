@@ -51,37 +51,39 @@ readgii = function(file){
   ######################
   file = decompress_gii(file)
   doc = read_xml(file)
-  n_data_arrays = xml_attr(doc, "NumberOfDataArrays")
+  n_data_arrays = xml2::xml_attr(doc, "NumberOfDataArrays")
   n_data_arrays = as.numeric(n_data_arrays)
-  ver = xml_attr(doc, "Version")
+  ver = xml2::xml_attr(doc, "Version")
 
   ###################################
   # Parsing Meta Data
   ###################################
-  meta = xml_find_all(doc, "./MetaData")
+  meta = xml2::xml_find_all(doc, "./MetaData")
   f = function(xpath) {
-    xml_text(xml_find_all(xml_children(meta), xpath))
+    xml2::xml_text(xml2::xml_find_all(xml2::xml_children(meta), xpath))
   }
   meta_names = f("./Name")
   meta = f("./Value")
   names(meta) = meta_names
 
-  lab_tab_pre = xml_children(xml_find_all(doc, "./LabelTable"))
-  lab_tab = do.call("rbind", xml_attrs(lab_tab_pre))
-  if (!is.null(lab_tab)) {rownames(lab_tab) = xml_text(lab_tab_pre)}
+  lab_tab_pre = xml2::xml_children(xml2::xml_find_all(doc, "./LabelTable"))
+  lab_tab = do.call("rbind", xml2::xml_attrs(lab_tab_pre))
+  if (!is.null(lab_tab)) {
+    rownames(lab_tab) = xml2::xml_text(lab_tab_pre)
+    }
 
-  darray = xml_find_all(doc, "./DataArray")
+  darray = xml2::xml_find_all(doc, "./DataArray")
   # darray = as_list(darray)
   stopifnot(length(darray) == n_data_arrays)
 
   MD = lapply(darray, function(x) {
-    xml_children(xml_find_all(x, "./MetaData"))
+    xml2::xml_children(xml2::xml_find_all(x, "./MetaData"))
   })
   MD = lapply(
     MD,
     function(x){
-      names = xml_text(xml_find_all(x, "./Name"))
-      vals = xml_text(xml_find_all(x, "./Value"))
+      names = xml2::xml_text(xml2::xml_find_all(x, "./Name"))
+      vals = xml2::xml_text(xml2::xml_find_all(x, "./Value"))
       cbind(names = names,
             vals = vals)
     })
@@ -89,13 +91,13 @@ readgii = function(file){
   # transformation matrix
   trans = lapply(
     darray,
-    xml_find_all,
+    xml2::xml_find_all,
     xpath = "./CoordinateSystemTransformMatrix")
 
   parsed_trans = lapply(trans, function(x) {
-    cx = xml_children(x)
-    n = xml_name(cx)
-    res = lapply(cx, xml_text)
+    cx = xml2::xml_children(x)
+    n = xml2::xml_name(cx)
+    res = lapply(cx, xml2::xml_text)
     names(res) = n
     if ("MatrixData" %in% n) {
       ind = n %in% "MatrixData"
@@ -130,10 +132,10 @@ readgii = function(file){
 
 
   data = lapply(darray,
-                xml_find_all,
+                xml2::xml_find_all,
                 xpath = "./Data")
   vals = lapply(data,
-                xml_text)
+                xml2::xml_text)
 
   ind = 1
   N = nrow(info)
@@ -161,7 +163,7 @@ readgii = function(file){
 
     namer = convert_intent(intent)
     names(L)[ind] = namer
-    
+
     stopifnot(length(dat) == n)
 
     mat_dims = info[ind, dims]
