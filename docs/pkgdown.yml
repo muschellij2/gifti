@@ -1,0 +1,7 @@
+pandoc: '2.10'
+pkgdown: 1.6.1
+pkgdown_sha: ~
+articles:
+  Reading_GIFTI_Files: Reading_GIFTI_Files.html
+last_built: 2020-11-11T03:43Z
+

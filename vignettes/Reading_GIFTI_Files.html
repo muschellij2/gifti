@@ -12,7 +12,7 @@
 
 <meta name="author" content="John Muschelli" />
 
-<meta name="date" content="2020-08-24" />
+<meta name="date" content="2020-11-10" />
 
 <title>Reading GIFTI files in R</title>
 
@@ -29,22 +29,54 @@ document.addEventListener('DOMContentLoaded', function(e) {
   }
 });
 </script>
-<script>// Hide empty <a> tag within highlighted CodeBlock for screen reader accessibility (see https://github.com/jgm/pandoc/issues/6352#issuecomment-626106786) -->
-// v0.0.1
-// Written by JooYoung Seo (jooyoung@psu.edu) and Atsushi Yasumoto on June 1st, 2020.
-
+<style type="text/css">
+a.anchor-section {margin-left: 10px; visibility: hidden; color: inherit;}
+a.anchor-section::before {content: '#';}
+.hasAnchor:hover a.anchor-section {visibility: visible;}
+</style>
+<script>// Anchor sections v1.0 written by Atsushi Yasumoto on Oct 3rd, 2020.
 document.addEventListener('DOMContentLoaded', function() {
-  const codeList = document.getElementsByClassName("sourceCode");
-  for (var i = 0; i < codeList.length; i++) {
-    var linkList = codeList[i].getElementsByTagName('a');
-    for (var j = 0; j < linkList.length; j++) {
-      if (linkList[j].innerHTML === "") {
-        linkList[j].setAttribute('aria-hidden', 'true');
-      }
-    }
+  // Do nothing if AnchorJS is used
+  if (typeof window.anchors === 'object' && anchors.hasOwnProperty('hasAnchorJSLink')) {
+    return;
   }
+
+  const h = document.querySelectorAll('h1, h2, h3, h4, h5, h6');
+
+  // Do nothing if sections are already anchored
+  if (Array.from(h).some(x => x.classList.contains('hasAnchor'))) {
+    return null;
+  }
+
+  // Use section id when pandoc runs with --section-divs
+  const section_id = function(x) {
+    return ((x.classList.contains('section') || (x.tagName === 'SECTION'))
+            ? x.id : '');
+  };
+
+  // Add anchors
+  h.forEach(function(x) {
+    const id = x.id || section_id(x.parentElement);
+    if (id === '') {
+      return null;
+    }
+    let anchor = document.createElement('a');
+    anchor.href = '#' + id;
+    anchor.classList = ['anchor-section'];
+    x.classList.add('hasAnchor');
+    x.appendChild(anchor);
+  });
 });
 </script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
 
 
 <style type="text/css">code{white-space: pre;}</style>
@@ -331,7 +363,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Reading GIFTI files in R</h1>
 <h4 class="author">John Muschelli</h4>
-<h4 class="date">2020-08-24</h4>
+<h4 class="date">2020-11-10</h4>
 
 
 
@@ -341,37 +373,37 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 <div id="getting-the-data" class="section level3">
 <h3>Getting the Data</h3>
 <p>We provide some test data with the package, but must be downloaded using <code>download_gifti_data</code>. We also provide a test function that allows a user to check if the data is downloaded, which is useful for examples or vignettes, such as this one.</p>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>outdir =<span class="st"> </span><span class="ot">NULL</span></span>
-<span id="cb1-2"><a href="#cb1-2"></a><span class="kw">library</span>(gifti)</span>
-<span id="cb1-3"><a href="#cb1-3"></a><span class="kw">have_gifti_test_data</span>(<span class="dt">outdir =</span> outdir)</span></code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true"></a>outdir =<span class="st"> </span><span class="ot">NULL</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true"></a><span class="kw">library</span>(gifti)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true"></a><span class="kw">have_gifti_test_data</span>(<span class="dt">outdir =</span> outdir)</span></code></pre></div>
 <p>If this is false, we can combine these to ensure the data is downloaded:</p>
-<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">have_gifti_test_data</span>()) {</span>
-<span id="cb2-2"><a href="#cb2-2"></a>  <span class="kw">download_gifti_data</span>()</span>
-<span id="cb2-3"><a href="#cb2-3"></a>}</span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="cf">if</span> (<span class="kw">have_gifti_test_data</span>(<span class="dt">outdir =</span> outdir)) {</span>
-<span id="cb3-2"><a href="#cb3-2"></a>  gii_files =<span class="st"> </span><span class="kw">download_gifti_data</span>(<span class="dt">outdir =</span> outdir)</span>
-<span id="cb3-3"><a href="#cb3-3"></a>  gii_list =<span class="st"> </span><span class="kw">lapply</span>(gii_files, readgii)</span>
-<span id="cb3-4"><a href="#cb3-4"></a>  surf_files =<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;white[.]surf[.]gii&quot;</span>, gii_files, <span class="dt">value =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb3-5"><a href="#cb3-5"></a>  surfs =<span class="st"> </span><span class="kw">lapply</span>(surf_files, surf_triangles)</span>
-<span id="cb3-6"><a href="#cb3-6"></a>  </span>
-<span id="cb3-7"><a href="#cb3-7"></a>  col_file =<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;white[.]shape[.]gii&quot;</span>, gii_files, <span class="dt">value =</span> <span class="ot">TRUE</span>)</span>
-<span id="cb3-8"><a href="#cb3-8"></a>  cdata =<span class="st"> </span><span class="kw">readgii</span>(col_file)</span>
-<span id="cb3-9"><a href="#cb3-9"></a>  cdata =<span class="st"> </span>cdata<span class="op">$</span>data<span class="op">$</span>shape</span>
-<span id="cb3-10"><a href="#cb3-10"></a>  mypal =<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>))</span>
-<span id="cb3-11"><a href="#cb3-11"></a>  n =<span class="st"> </span><span class="dv">4</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a>  breaks =<span class="st"> </span><span class="kw">quantile</span>(cdata)</span>
-<span id="cb3-13"><a href="#cb3-13"></a>  ints =<span class="st"> </span><span class="kw">cut</span>(cdata, <span class="dt">include.lowest =</span> <span class="ot">TRUE</span>, <span class="dt">breaks =</span> breaks)</span>
-<span id="cb3-14"><a href="#cb3-14"></a>  ints =<span class="st"> </span><span class="kw">as.integer</span>(ints)</span>
-<span id="cb3-15"><a href="#cb3-15"></a>  <span class="kw">stopifnot</span>(<span class="op">!</span><span class="kw">any</span>(<span class="kw">is.na</span>(ints)))</span>
-<span id="cb3-16"><a href="#cb3-16"></a>  cols =<span class="st"> </span><span class="kw">mypal</span>(n)[ints]</span>
-<span id="cb3-17"><a href="#cb3-17"></a>  cols =<span class="st"> </span>cols[surfs[[<span class="dv">1</span>]]<span class="op">$</span>triangle]</span>
-<span id="cb3-18"><a href="#cb3-18"></a>  </span>
-<span id="cb3-19"><a href="#cb3-19"></a>  <span class="cf">if</span> (<span class="kw">requireNamespace</span>(<span class="st">&quot;rgl&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</span>
-<span id="cb3-20"><a href="#cb3-20"></a>    rgl<span class="op">::</span><span class="kw">rgl.open</span>()</span>
-<span id="cb3-21"><a href="#cb3-21"></a>    rgl<span class="op">::</span><span class="kw">rgl.triangles</span>(surfs[[<span class="dv">1</span>]]<span class="op">$</span>pointset, <span class="dt">color =</span> cols)</span>
-<span id="cb3-22"><a href="#cb3-22"></a>    rgl<span class="op">::</span><span class="kw">play3d</span>(rgl<span class="op">::</span><span class="kw">spin3d</span>(), <span class="dt">duration =</span> <span class="dv">5</span>)</span>
-<span id="cb3-23"><a href="#cb3-23"></a>  }</span>
-<span id="cb3-24"><a href="#cb3-24"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true"></a><span class="cf">if</span> (<span class="op">!</span><span class="kw">have_gifti_test_data</span>()) {</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true"></a>  <span class="kw">download_gifti_data</span>()</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true"></a>}</span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true"></a><span class="cf">if</span> (<span class="kw">have_gifti_test_data</span>(<span class="dt">outdir =</span> outdir)) {</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true"></a>  gii_files =<span class="st"> </span><span class="kw">download_gifti_data</span>(<span class="dt">outdir =</span> outdir)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true"></a>  gii_list =<span class="st"> </span><span class="kw">lapply</span>(gii_files, readgii)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true"></a>  surf_files =<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;white[.]surf[.]gii&quot;</span>, gii_files, <span class="dt">value =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true"></a>  surfs =<span class="st"> </span><span class="kw">lapply</span>(surf_files, surf_triangles)</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true"></a>  </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true"></a>  col_file =<span class="st"> </span><span class="kw">grep</span>(<span class="st">&quot;white[.]shape[.]gii&quot;</span>, gii_files, <span class="dt">value =</span> <span class="ot">TRUE</span>)</span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true"></a>  cdata =<span class="st"> </span><span class="kw">readgii</span>(col_file)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true"></a>  cdata =<span class="st"> </span>cdata<span class="op">$</span>data<span class="op">$</span>shape</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true"></a>  mypal =<span class="st"> </span>grDevices<span class="op">::</span><span class="kw">colorRampPalette</span>(<span class="dt">colors =</span> <span class="kw">c</span>(<span class="st">&quot;blue&quot;</span>, <span class="st">&quot;black&quot;</span>, <span class="st">&quot;red&quot;</span>))</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true"></a>  n =<span class="st"> </span><span class="dv">4</span></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true"></a>  breaks =<span class="st"> </span><span class="kw">quantile</span>(cdata)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true"></a>  ints =<span class="st"> </span><span class="kw">cut</span>(cdata, <span class="dt">include.lowest =</span> <span class="ot">TRUE</span>, <span class="dt">breaks =</span> breaks)</span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true"></a>  ints =<span class="st"> </span><span class="kw">as.integer</span>(ints)</span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true"></a>  <span class="kw">stopifnot</span>(<span class="op">!</span><span class="kw">any</span>(<span class="kw">is.na</span>(ints)))</span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true"></a>  cols =<span class="st"> </span><span class="kw">mypal</span>(n)[ints]</span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true"></a>  cols =<span class="st"> </span>cols[surfs[[<span class="dv">1</span>]]<span class="op">$</span>triangle]</span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true"></a>  </span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true"></a>  <span class="cf">if</span> (<span class="kw">requireNamespace</span>(<span class="st">&quot;rgl&quot;</span>, <span class="dt">quietly =</span> <span class="ot">TRUE</span>)) {</span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true"></a>    rgl<span class="op">::</span><span class="kw">rgl.open</span>()</span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true"></a>    rgl<span class="op">::</span><span class="kw">rgl.triangles</span>(surfs[[<span class="dv">1</span>]]<span class="op">$</span>pointset, <span class="dt">color =</span> cols)</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true"></a>    rgl<span class="op">::</span><span class="kw">play3d</span>(rgl<span class="op">::</span><span class="kw">spin3d</span>(), <span class="dt">duration =</span> <span class="dv">5</span>)</span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true"></a>  }</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true"></a>}</span></code></pre></div>
 </div>
 </div>
 

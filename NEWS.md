@@ -1,3 +1,7 @@
+# gifti 0.8.0
+
+* Added the `writegii` function.
+
 # gifti 0.7.5
 
 * Added `create_data_matrix` for column order checking.
