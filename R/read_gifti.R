@@ -2,6 +2,11 @@
 #' @description Reads a GIFTI File and parses the output
 #'
 #' @param file Name of file to read
+#' @param idx Numeric vector indicating the data indices to read. If \code{NULL}
+#'  (default), read all the data. Must be a subset of the indices present in the
+#'  file, or an error will occur. Indices that are not read in will be indicated
+#'  by empty entries in the output \code{"gifti"} object. Note that all metadata
+#'  will be read in regardless of \code{"idx"}.
 #'
 #' @return List of values
 #' @export
@@ -39,7 +44,7 @@
 #' }
 #' }
 #'
-readgii = function(file){
+readgii = function(file, idx=NULL){
 
   if (length(file) > 1) {
     res = lapply(file, readgii)
@@ -142,7 +147,10 @@ readgii = function(file){
   L = vector(mode = "list",
              length = N)
 
-  for (ind in seq(N)) {
+  if (is.null(idx)) { idx <- seq(N) } else { idx <- as.numeric(idx) }
+  stopifnot(all(idx %in% seq(N)))
+
+  for (ind in idx) {
 
     encoding = info$Encoding[ind]
     datatype = info$DataType[ind]
@@ -193,14 +201,14 @@ readgii = function(file){
 
 #' @rdname readgii
 #' @export
-readGIfTI = function(file){
-  res = readgii(file)
+readGIfTI = function(file, idx=NULL){
+  res = readgii(file, idx)
   return(res)
 }
 
 #' @rdname readgii
 #' @export
-read_gifti = function(file){
-  res = readgii(file)
+read_gifti = function(file, idx=NULL){
+  res = readgii(file, idx)
   return(res)
 }

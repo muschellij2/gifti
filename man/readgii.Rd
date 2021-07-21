@@ -6,14 +6,20 @@
 \alias{read_gifti}
 \title{Read GIFTI File}
 \usage{
-readgii(file)
+readgii(file, idx = NULL)
 
-readGIfTI(file)
+readGIfTI(file, idx = NULL)
 
-read_gifti(file)
+read_gifti(file, idx = NULL)
 }
 \arguments{
 \item{file}{Name of file to read}
+
+\item{idx}{Numeric vector indicating the data indices to read. If \code{NULL}
+(default), read all the data. Must be a subset of the indices present in the
+file, or an error will occur. Indices that are not read in will be indicated
+by empty entries in the output \code{"gifti"} object. Note that all metadata
+will be read in regardless of \code{"idx"}.}
 }
 \value{
 List of values
