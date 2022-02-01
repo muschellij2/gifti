@@ -1,7 +1,7 @@
 Package: gifti
 Type: Package
 Title: Reads in 'Neuroimaging' 'GIFTI' Files with Geometry Information
-Version: 0.8.0
+Version: 0.8.1
 Date: 2021-03-31
 Author: John Muschelli
 Maintainer: John Muschelli <muschellij2@gmail.com>

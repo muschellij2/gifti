@@ -35,7 +35,7 @@ data_encoder = function(
 
   encoding = match.arg(encoding)
   if (encoding == "ASCII") {
-    dig_opt = options()$digits
+    dig_opt = getOption("digits")
     on.exit({
       options(digits = dig_opt)
     })
