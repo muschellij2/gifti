@@ -35,13 +35,8 @@ data_encoder = function(
 
   encoding = match.arg(encoding)
   if (encoding == "ASCII") {
-    dig_opt = getOption("digits")
-    on.exit({
-      options(digits = dig_opt)
-    })
-    options(digits = 7)
-    values = as.character(values)
-    values = paste(values, collapse = "\n")
+    values = format(values, scientific=FALSE)
+    values = paste(values, collapse="\n")
     return(values)
   }
   L = convert_binary_datatype(datatype = datatype)
