@@ -61,7 +61,12 @@ data_decoder = function(
     values = values[ !values %in% "" ]
     values = trimws(values)
     values = strsplit(values, " ")
-    values = lapply(values, as.numeric)
+    as.numeric2 <- function(x, ...){
+      NAmask <- x=="NA"
+      x2 <- x; x2[NAmask] <- 0
+      ifelse(NAmask, NA, as.numeric(x2))
+    }
+    values = lapply(values, as.numeric2)
     values = unlist(values)
     return(values)
   }
