@@ -106,7 +106,6 @@ readgii = function(file){
         mat = trimws(mat)
         mat = mat[ !mat %in% ""]
         mat = lapply(strsplit(mat, "\\s+"), as.numeric)
-        mat = lapply(mat, function(q){q[!is.na(q)]})
         mat = do.call("rbind", mat)
         return(mat)
       })
