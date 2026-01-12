@@ -32,8 +32,8 @@
 #' if (have_gifti_test_data(outdir = NULL)) {
 #'
 #'  if (requireNamespace("rgl", quietly = TRUE)) {
-#'     rgl::rgl.open()
-#'     rgl::rgl.triangles(surfs[[1]]$pointset, color = cols)
+#'     rgl::open3d()
+#'     rgl::triangles3d(surfs[[1]]$pointset, color = cols)
 #'     rgl::play3d(rgl::spin3d(), duration = 5)
 #'  }
 #' }

@@ -1,10 +1,9 @@
 Package: gifti
 Type: Package
 Title: Reads in 'Neuroimaging' 'GIFTI' Files with Geometry Information
-Version: 0.8.2
-Date: 2021-03-31
-Author: John Muschelli
-Maintainer: John Muschelli <muschellij2@gmail.com>
+Version: 0.9.0
+Authors@R: person(given = "John", family = "Muschelli", 
+    role = c("aut", "cre"), email = "muschellij2@gmail.com")
 Description: Functions to read in the geometry format under the 
     'Neuroimaging' 'Informatics' Technology Initiative ('NIfTI'), called 
     'GIFTI' <https://www.nitrc.org/projects/gifti/>. 
@@ -25,6 +24,5 @@ Suggests:
     covr
 BugReports: https://github.com/muschellij2/gifti/issues
 Encoding: UTF-8
-LazyData: true
-RoxygenNote: 7.1.2
 VignetteBuilder: knitr
+RoxygenNote: 7.3.3

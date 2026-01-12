@@ -1,3 +1,7 @@
+# gifti 0.9.0
+
+* Fixing defunct issues with `rgl` package.
+
 # gifti 0.8.0
 
 * Added the `writegii` function.
@@ -18,4 +22,4 @@
 
 * Added ability to read `.gii.gz` files
 
-* GIFI example data is now `.gii.gz`
+* GIfTI example data is now `.gii.gz`
